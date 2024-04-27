@@ -21,6 +21,7 @@ login_manager.init_app(app)
 @login_manager.user_loader
 def load_user(user_id):
     db_sess = db_session.create_session()
+    db_sess.close()
     return db_sess.query(User).get(user_id)
 
 
@@ -33,6 +34,7 @@ def get_rating(id):
 	db_sess = db_session.create_session()
 	plus = len(db_sess.query(Score).filter(Score.post_id == id, Score.value == 1).all())
 	minus = len(db_sess.query(Score).filter(Score.post_id == id, Score.value == -1).all())
+	db_sess.close()
 	return (plus - minus)
 
 
@@ -53,6 +55,7 @@ def search():
 			post.score = 0
 		post.rating = get_rating(post.id)
 
+	db_sess.close()
 	return render_template('index.html', title='Главная', posts=posts, search=query)
 @app.route('/post/delete/<id>')
 @login_required
@@ -68,6 +71,7 @@ def delete_post(id):
 		for comment in comments:
 			db_sess.delete(comment)
 		db_sess.commit()
+	db_sess.close()
 	return redirect('/')
 
 @app.route('/profile/<id>', methods=['GET', 'POST'])
@@ -78,6 +82,7 @@ def profile(id):
 	db_sess = db_session.create_session()
 	data = db_sess.query(User).filter(User.id == id).first()
 	data.created_date = str(data.created_date).split()[0]
+	db_sess.close()
 	return render_template('profile.html', data=data, form=form) 
 
 
@@ -96,9 +101,11 @@ def post(id):
 		comment = Comment(content=form.content.data, user_id=current_user.id)
 		data.comments.append(comment)
 		db_sess.commit()
+		db_sess.close()
 		return redirect(f'/post/{id}')
 	for comment in data.comments:
 		comment.username = db_sess.query(User).filter(User.id == comment.user_id).first().username
+	db_sess.close()
 	return render_template('post.html', title=f'Пост #{data.id}', data=data, form=form)
 
 @app.route('/api/minus/<id>')
@@ -119,6 +126,7 @@ def minus_rate(id):
 		user.scores.append(score)
 	db_sess.commit()
 	value = get_rating(id)
+	db_sess.close()
 	return {'user': current_user.username, 'colored': colored, 'new_value': value}
 
 
@@ -140,6 +148,7 @@ def plus_rate(id):
 		user.scores.append(score)
 	db_sess.commit()
 	value = get_rating(id)
+	db_sess.close()
 	return {'user': current_user.username, 'colored': colored, 'new_value': value}
 
 @app.route('/logout')
@@ -158,6 +167,7 @@ def create_post():
 		post = Post(content=form.content.data)
 		user.posts.append(post)
 		db_sess.commit()
+		db_sess.close()
 		return redirect('/')
 	return render_template('create_post.html', title='Создать пост', form=form)
 
@@ -167,13 +177,14 @@ def index():
 	db_sess = db_session.create_session()
 	posts = db_sess.query(Post).all()[::-1]
 	for post in posts:
+		post.creator
 		try:
 			score = db_sess.query(Score).filter(Score.user_id == current_user.id, Score.post_id == post.id).first()
 			post.score = score.value if score else 0
 		except AttributeError:
 			post.score = 0
 		post.rating = get_rating(post.id)
-
+	db_sess.close()
 	return render_template('index.html', title='Главная', posts=posts)
 
 
@@ -183,6 +194,7 @@ def login():
 	if form.validate_on_submit():
 		db_sess = db_session.create_session()
 		user = db_sess.query(User).filter(User.username == form.username.data).first()
+		db_sess.close()
 		if user and user.check_password(form.password.data):
 			login_user(user, remember=True)
 			return redirect('/')
@@ -195,9 +207,11 @@ def register():
 	form = RegisterForm()
 	if form.validate_on_submit():
 		if form.password.data != form.password_again.data:
+			db_sess.close()
 			return render_template('register.html', title='Регистрация', form=form, message='Пароли не совпадают')
 		db_sess = db_session.create_session()
 		if db_sess.query(User).filter(User.username == form.username.data).first():
+			db_sess.close()
 			return render_template('register.html', title='Регистрация', form=form, message='Имя пользователя занято')
 		user = User(
 			username=form.username.data
@@ -205,6 +219,7 @@ def register():
 		user.set_password(form.password.data)
 		db_sess.add(user)
 		db_sess.commit()
+		db_sess.close()
 		with open('static/img/avatar.png', 'rb') as input_file:
 			with open(f'static/img/avatars/{user.id}.png', 'wb') as output_file:
 				output_file.write(input_file.read())
