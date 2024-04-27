@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="default-text size-30 roboto-bold">Создать пост</h1>
+  <form action="" method="post">
+      {{ form.hidden_tag() }}
+      <br><br>
+      <p>
+          {{ form.content.label(class="default-text roboto-medium full-block") }}<br>
+          {{ form.content(class="block input-light full-block") }}<br>
+          {% for error in form.content.errors %}
+              <p class="block" role="alert">
+                  {{ error }}
+              </p>
+          {% endfor %}
+      </p><br>
+      <p class="default-text roboto-medium">{{message}}</p>
+      <p>{{ form.submit(type="submit", class="btn block full-block") }}</p>
+    </form><br><br>
+{% endblock %}

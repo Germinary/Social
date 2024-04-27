@@ -1,0 +1,302 @@
+.roboto-thin {
+  font-family: "Roboto", sans-serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.roboto-light {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.roboto-regular {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.roboto-medium {
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.roboto-bold {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.roboto-black {
+  font-family: "Roboto", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+}
+
+.block {
+  text-decoration: none;
+  border-radius: 20px;
+  font-size: 25px;
+  border: 0;
+  padding: 15px;
+}
+
+.input {
+  background: #0A090F;
+  color: #AE9AF8;  
+}
+
+.input-light {
+  background: #100E17;
+  color: #AE9AF8;  
+}
+
+.btn {
+  padding-left: 55px;
+  padding-right: 55px;
+  background: #3415AE;
+  color: #AE9AF8;
+}
+
+.btn-dark {
+  padding-left: 55px;
+  padding-right: 55px;
+  background: #100E17;
+  color: #AE9AF8;
+}
+
+.menu {
+  background: #100E17;
+  padding: 0 7%;
+  display: flex;
+  height: 100px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.left-menu {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
+
+
+.right-menu {
+  display: flex;
+  align-items: center;
+  gap: 48px
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+}
+
+.default-text {
+  color: #AE9AF8;
+  font-size: 25px;
+}
+
+.none-decor {
+  text-decoration: none;
+}
+
+::-webkit-input-placeholder {
+  color: #29243B;
+  font-size: 25px;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.content {
+  padding: 0 7%;
+}
+
+body {
+  background: #0A090F;
+}
+
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.count-btn {
+  display: inline-block;
+  background: #1F1B2D;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  line-height: 35px;
+  margin-left: 10px;
+  margin-right: 10px;
+  transition: 0.3s;
+}
+
+.count-active {
+  background: #AE9AF8;
+  color: #1F1B2D;
+}
+
+.count-btn:hover {
+  cursor: pointer;
+  background: #AE9AF8;
+  color: #1F1B2D;
+}
+
+.count-active:hover {
+  background: #1F1B2D;
+  color: #AE9AF8;
+}
+
+.post-counter {
+  display: flex;
+  align-items: center;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.post {
+  background: #100E17;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 41%;
+  padding: 4%;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+
+.size-30 {
+  font-size: 30px;
+}
+
+.size-40 {
+  font-size: 40px;
+}
+
+.posts {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.feeds {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.posts-feed {
+  width: 84%;
+}
+
+.actual-feed {
+  width: 14%;
+}
+
+.more {
+  background: #1F1B2D;
+  display: inline-block;
+  padding: 5px 20px;
+}
+
+.actual-block {
+  border-radius: 20px;
+  background: #100E17;
+  padding-top: 25%;
+  padding-bottom: 25%;
+  width: 100% !important;
+}
+
+@media (max-width: 1200px) {
+  .menu {
+    flex-direction: column;
+    height: 200px;
+    padding: 5% 0;
+  }
+  .left-menu {
+    width: 86%;
+    justify-content: space-between;
+  }
+  .posts-feed {
+    width: 70%;
+  }
+  .post {
+    width: 100%;
+  }
+  .actual-feed {
+    width: 28%;
+  }
+}
+
+.actual-feed .size-30 {
+  text-align: right;
+}
+
+.light-block {
+  display: block;
+  background: #100E17;
+}
+
+.full-block {
+  display: block;
+  width: 100%;
+}
+
+.just-block {
+  display: block;
+}
+
+textarea.full-block {
+  width: 94%;
+  padding: 3%;
+}
+
+.full-input-block {
+  width: 94%;
+  padding: 3%;
+}
+
+.profile {
+  display: flex;
+  justify-content: space-between;
+
+}
+
+.profile div {
+  width: 47%;
+}
+
+.profile-image img {
+  min-width: 50%;
+  max-width: 75%;
+  border-radius: 20px;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

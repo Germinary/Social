@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="default-text size-30 roboto-bold">Профиль {{data.username}}</h1><br>
+<div class="profile ">
+  <div class="profile-image light-block block">
+    <center><img src="/static/img/avatars/{{data.id}}.png" alt=""></center>
+    {% if current_user.id == data.id %}
+    <form action="" method="post" enctype="multipart/form-data">
+      {{ form.hidden_tag() }}
+      <br><br>
+      <p>
+          {{ form.image.label(class="default-text roboto-medium") }}<br>
+          {{ form.image(class="block input full-input-block") }}<br>
+          {% for error in form.image.errors %}
+              <p class="block" role="alert">
+                  {{ error }}
+              </p>
+          {% endfor %}
+      </p>
+      <br>
+      <p class="default-text roboto-medium">{{message}}</p>
+      <p>{{ form.submit(type="submit", class="btn block full-block") }}</p>
+    </form>
+    {% endif %}
+  </div>
+  <div class="profile-info light-block block default-text roboto-medium">
+    <div>
+      <p>ID: {{data.id}}</p>
+      <p>Имя пользователя: {{data.username}}</p>
+      <p>Дата регистрации: {{data.created_date}}</p>
+    </div>
+    {% if current_user.id == data.id %}
+      <a href="/logout" class="btn block"><center>Выйти</center></a>
+    {% endif %}
+  </div>
+</div>
+<br>
+{% endblock %}

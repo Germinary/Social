@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<center>
+<h1 class="default-text size-30 roboto-bold">Войти</h1>
+  <form action="" method="post">
+      {{ form.hidden_tag() }}
+      <br><br>
+      <p>
+          {{ form.username.label(class="default-text roboto-medium") }}<br>
+          {{ form.username(class="block input-light") }}<br>
+          {% for error in form.username.errors %}
+              <p class="block" role="alert">
+                  {{ error }}
+              </p>
+          {% endfor %}
+      </p>
+      <br>
+      <p>
+          {{ form.password.label(class="default-text roboto-medium") }}<br>
+          {{ form.password(class="block input-light") }}<br>
+          {% for error in form.password.errors %}
+              <p content="block" role="alert">
+                  {{ error }}
+              </p>
+          {% endfor %}
+      </p>
+      <br><br>
+      <p class="default-text roboto-medium">{{message}}</p>
+      <br><br>
+      <p>{{ form.submit(type="submit", class="btn block") }}</p><br><br>
+      <a href="/register" class="block btn-dark">Регистрация</a>
+  </form>
+</center>
+{% endblock %}

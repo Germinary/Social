@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="feeds">
+    <div class="posts-feed">
+    <p class="default-text size-30 roboto-medium">Лента постов</p>
+    <br><br>
+    <div class="posts">
+    {% for post in posts %}
+    <div id="post-{{post.id}}" class="post">
+      <div class="post-header">
+        <div class="user-info">
+          <div class="avatar">
+              <img src="/static/img/avatars/{{post.creator.id}}.png">
+          </div>
+          <span class="default-text roboto-medium">{{post.creator.username}}</span>
+        </div>
+        <div class="post-counter">
+          <span onclick="minus({{post.id}})" class="count-btn roboto-medium default-text {% if post.score == -1 %}count-active{% endif %}"><center>-</center></span>
+          <span class="post-count roboto-medium default-text">{{post.rating}}</span>
+          <span onclick="plus({{post.id}})" class="count-btn roboto-medium default-text {% if post.score == 1 %}count-active{% endif %}"><center>+</center></span>
+        </div>
+      </div>
+      <div class="post-content">
+        <p class="default-text roboto-medium">{{post.content}}</p>
+        <br>
+        <a href="/post/{{post.id}}" class="more none-decore default-text roboto-medium block">Читать далее</a>
+      </div>
+    </div>
+    {% endfor %}
+    </div>
+  </div>
+    <div class="actual-feed">
+      <p class="default-text size-30 roboto-medium">Актуальное</p>
+      <br><br>
+      <div class="actual-block" align="center">
+        <p class="default-text roboto-medium">#Lorem</p>
+        <p class="default-text roboto-medium">#Lorem</p>
+        <p class="default-text roboto-medium">#Lorem</p>
+        <p class="default-text roboto-medium">#Lorem</p>
+        <p class="default-text roboto-medium">#Lorem</p>
+        <p class="default-text roboto-medium">#Lorem</p>
+      </div>
+    </div>
+  </div>
+
+<script type="text/javascript">
+  function minus(id) {
+    var post = document.getElementById("post-" + id);
+    var url = '/api/minus/' + id;
+    console.log(url);
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        if (data['colored']) {
+          post.getElementsByClassName('post-counter')[0].getElementsByClassName('count-btn')[0].style.background = "#AE9AF8";
+          post.getElementsByClassName('post-counter')[0].getElementsByClassName('count-btn')[0].style.color = "#1F1B2D";
+        } else {
+          post.getElementsByClassName('post-counter')[0].getElementsByClassName('count-btn')[0].style.background = "#1F1B2D";
+          post.getElementsByClassName('post-counter')[0].getElementsByClassName('count-btn')[0].style.color = "#AE9AF8";
+        }
+        post.getElementsByClassName('post-count')[0].innerHTML = data['new_value'];
+
+        post.getElementsByClassName('post-counter')[0].getElementsByClassName('count-btn')[1].style.background = "#1F1B2D";
+        post.getElementsByClassName('post-counter')[0].getElementsByClassName('count-btn')[1].style.color = "#AE9AF8";
+      })
+      .catch(error => console.error('Ошибка:', error));
+  }
+
+  function plus(id) {
+    var post = document.getElementById("post-" + id);
+    var url = '/api/plus/' + id;
+    console.log(url);
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        if (data['colored']) {
+          post.getElementsByClassName('post-counter')[0].getElementsByClassName('count-btn')[1].style.background = "#AE9AF8";
+          post.getElementsByClassName('post-counter')[0].getElementsByClassName('count-btn')[1].style.color = "#1F1B2D";
+        } else {
+          post.getElementsByClassName('post-counter')[0].getElementsByClassName('count-btn')[1].style.background = "#1F1B2D";
+          post.getElementsByClassName('post-counter')[0].getElementsByClassName('count-btn')[1].style.color = "#AE9AF8";
+        }
+        post.getElementsByClassName('post-count')[0].innerHTML = data['new_value'];
+
+        post.getElementsByClassName('post-counter')[0].getElementsByClassName('count-btn')[0].style.background = "#1F1B2D";
+        post.getElementsByClassName('post-counter')[0].getElementsByClassName('count-btn')[0].style.color = "#AE9AF8";
+      })
+      .catch(error => console.error('Ошибка:', error));
+  }
+
+
+</script>
+{% endblock %}

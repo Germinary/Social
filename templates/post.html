@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="post" class="post-header">
+  <h1 class="default-text size-30 roboto-bold">Пост #{{data.id}}</h1>
+  <div class="post-counter">
+  <span onclick="minus({{data.id}})" class="count-btn roboto-medium default-text {% if data.score == -1 %}count-active{% endif %}"><center>-</center></span>
+  <span class="post-count roboto-medium default-text">{{data.rating}}</span>
+  <span onclick="plus({{data.id}})" class="count-btn roboto-medium default-text {% if data.score == 1 %}count-active{% endif %}"><center>+</center></span>
+  </div>
+</div>
+<br>
+<div class="block default-text roboto-medium light-block">{{data.content}}</div>
+{% if current_user.id == data.creator_id %}
+  <br>
+  <a href="/post/delete/{{data.id}}" class="block btn just-block"><center>Удалить пост</center></a>
+{% endif %}
+<br><br>
+<form action="" method="post">
+  {{ form.hidden_tag() }}
+  <br><br>
+  <p>
+      {{ form.content.label(class="default-text roboto-medium full-block") }}<br>
+      {{ form.content(class="block input-light full-block") }}<br>
+      {% for error in form.content.errors %}
+          <p class="block" role="alert">
+              {{ error }}
+          </p>
+      {% endfor %}
+  </p>
+  <br>
+  <p class="default-text roboto-medium">{{message}}</p>
+  <p>{{ form.submit(type="submit", class="btn block full-block") }}</p>
+</form><br><br>
+{% for comment in data.comments[::-1] %}
+    <div class="block default-text roboto-medium light-block">
+      <div class="user-info">
+        <div class="avatar">
+            <img src="/static/img/avatars/{{comment.user_id}}.png">
+        </div>
+        <span class="default-text roboto-medium">{{comment.username}}</span>
+      </div><br>
+      <p>{{comment.content}}</p>
+    </div><br>
+{% endfor %}
+<script type="text/javascript">
+  function minus(id) {
+    var post = document.getElementById("post");
+    var url = '/api/minus/' + id;
+    console.log(url);
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        if (data['colored']) {
+          post.getElementsByClassName('post-counter')[0].getElementsByClassName('count-btn')[0].style.background = "#AE9AF8";
+          post.getElementsByClassName('post-counter')[0].getElementsByClassName('count-btn')[0].style.color = "#1F1B2D";
+        } else {
+          post.getElementsByClassName('post-counter')[0].getElementsByClassName('count-btn')[0].style.background = "#1F1B2D";
+          post.getElementsByClassName('post-counter')[0].getElementsByClassName('count-btn')[0].style.color = "#AE9AF8";
+        }
+        post.getElementsByClassName('post-count')[0].innerHTML = data['new_value'];
+
+        post.getElementsByClassName('post-counter')[0].getElementsByClassName('count-btn')[1].style.background = "#1F1B2D";
+        post.getElementsByClassName('post-counter')[0].getElementsByClassName('count-btn')[1].style.color = "#AE9AF8";
+      })
+      .catch(error => console.error('Ошибка:', error));
+  }
+
+  function plus(id) {
+    var post = document.getElementById("post");
+    var url = '/api/plus/' + id;
+    console.log(url);
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        if (data['colored']) {
+          post.getElementsByClassName('post-counter')[0].getElementsByClassName('count-btn')[1].style.background = "#AE9AF8";
+          post.getElementsByClassName('post-counter')[0].getElementsByClassName('count-btn')[1].style.color = "#1F1B2D";
+        } else {
+          post.getElementsByClassName('post-counter')[0].getElementsByClassName('count-btn')[1].style.background = "#1F1B2D";
+          post.getElementsByClassName('post-counter')[0].getElementsByClassName('count-btn')[1].style.color = "#AE9AF8";
+        }
+        post.getElementsByClassName('post-count')[0].innerHTML = data['new_value'];
+
+        post.getElementsByClassName('post-counter')[0].getElementsByClassName('count-btn')[0].style.background = "#1F1B2D";
+        post.getElementsByClassName('post-counter')[0].getElementsByClassName('count-btn')[0].style.color = "#AE9AF8";
+      })
+      .catch(error => console.error('Ошибка:', error));
+  }
+
+
+</script>
+{% endblock %}

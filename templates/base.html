@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  {% block links %}{% endblock %}
+  <link rel="stylesheet" href="/static/css/base.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{title}} | Logo</title>
+</head>
+<body>
+  <div class="menu">
+    <div class="left-menu">
+      <a href="/" class="none-decor"><h1 class="roboto-bold default-text size-40">Logo</h1></a>
+      <form action="/search" method="get">
+        <input type="text" name="query" placeholder="Поиск" class="block input" value="{{search}}">
+      </form>
+    </div>
+    <div class="right-menu">
+      <a href="/create_post" class="block btn roboto-medium">Создать пост</a>
+      <span class="default-text roboto-medium"><img src="/static/img/notifications.svg" alt=""></span>
+      {% if current_user.is_authenticated %}
+        <a class="default-text none-decor roboto-medium" href="/me">{{current_user.username}}</a>
+      {% else %}
+        <a class="default-text none-decor roboto-medium" href="/login">Войти</a>
+      {% endif %}
+    </div>   
+  </div>
+  <div class="content">
+    <br><br><br><br>
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>
