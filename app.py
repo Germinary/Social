@@ -219,10 +219,10 @@ def register():
 		user.set_password(form.password.data)
 		db_sess.add(user)
 		db_sess.commit()
-		db_sess.close()
 		with open('static/img/avatar.png', 'rb') as input_file:
 			with open(f'static/img/avatars/{user.id}.png', 'wb') as output_file:
 				output_file.write(input_file.read())
+		db_sess.close()
 		return redirect('/login')
 	return render_template('register.html', title='Регистрация', form=form)
 
